@@ -1,5 +1,4 @@
-//  API client
-
+// src/services/connect.js
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 async function request(method, url, body = null) {
@@ -36,8 +35,8 @@ async function request(method, url, body = null) {
     throw error;
   }
 
-  // Always return the nested data property
-  return data.data;
+  // Return the actual data array/object
+  return data.data || data;
 }
 
 const api = {
