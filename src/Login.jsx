@@ -1,6 +1,8 @@
+// src/Login.jsx
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login } from './services/auth'
+import './styles/Login.css'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -13,33 +15,73 @@ export default function Login() {
     e.preventDefault()
     setLoading(true)
     setError('')
+
     try {
       await login(email, password)
       navigate('/', { replace: true })
     } catch (err) {
       setError('Invalid email or password. Please try again.')
+      console.error(err)
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div style={{ maxWidth: 420, margin: '4rem auto', padding: 20 }}>
-      <h2>Sign in</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: 8 }}>
-           <label htmlFor="email">Email</label>
-          <br />
-          <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+    <div className="login-container">
+      <div className="login-box">
+        <div className="login-header">
+          <h1>Sign In</h1>
+          <p>API Contract Management System</p>
         </div>
-        <div style={{ marginBottom: 8 }}>
-          <label htmlFor="password">Password</label>
-          <br />
-          <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Email Address</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={loading}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              disabled={loading}
+            />
+          </div>
+
+          {error && (
+            <div className="error-message">
+              <span className="error-icon">⚠️</span>
+              <span>{error}</span>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="submit-btn"
+            disabled={loading}
+          >
+            {loading ? 'Signing in...' : 'Sign In'}
+          </button>
+        </form>
+
+        <div className="login-footer">
+          <p>© 2025 API Contract Management System. All rights reserved.</p>
         </div>
-        {error && <div style={{ color: 'red', marginBottom: 8 }}>{error}</div>}
-        <button type="submit" disabled={loading}>{loading ? 'Signing in...' : 'Sign in'}</button>
-      </form>
+      </div>
     </div>
   )
 }
