@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { login } from './services/auth'
 
 export default function Login() {
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -14,10 +14,10 @@ export default function Login() {
     setLoading(true)
     setError('')
     try {
-      await login(username, password)
+      await login(email, password)
       navigate('/', { replace: true })
     } catch (err) {
-      setError('Invalid username or password. Please try again.')
+      setError('Invalid email or password. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -28,9 +28,9 @@ export default function Login() {
       <h2>Sign in</h2>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: 8 }}>
-           <label htmlFor="username">Username</label>
+           <label htmlFor="email">Email</label>
           <br />
-          <input id="username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+          <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
         <div style={{ marginBottom: 8 }}>
           <label htmlFor="password">Password</label>

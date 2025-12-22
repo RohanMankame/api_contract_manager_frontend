@@ -9,32 +9,25 @@ function ProtectedRoute({ children }) {
 }
 
 function Home() {
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
-    const handleLogout = async () => {
-        try {
-            await logout()
-            navigate('/login', { replace: true })
-        } catch (error) {
-            console.error('Logout failed:', error)
-        }
-    }
-
-
-
+  const handleLogout = () => {
+    logout()
+    navigate('/login', { replace: true })
+  }
 
   return (
     <div style={{ padding: 20 }}>
-        <h1>API Contract Management System</h1>
-        <p>This is the APP (protected)</p>
-        <button onClick={handleLogout}>Sign out</button>
+      <h1>API Contract Management System</h1>
+      <p>This is the APP (protected)</p>
+      <button onClick={handleLogout}>Sign out</button>
     </div>
   )
 }
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route

@@ -11,13 +11,17 @@ async function request(method, url, body = null) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${BASE_URL}${url}`, {
+  const fullUrl = `${BASE_URL}${url}`;
+  console.log('Request:', method, fullUrl, body);
+
+  const response = await fetch(fullUrl, {
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined,
   });
 
   const data = await response.json().catch(() => null);
+  console.log('Response:', response.status, data);
 
   if (!response.ok) {
     if (response.status === 401) {
@@ -30,7 +34,8 @@ async function request(method, url, body = null) {
     throw error;
   }
 
-  return data;
+  // Always return the nested data property
+  return data.data;
 }
 
 const api = {
