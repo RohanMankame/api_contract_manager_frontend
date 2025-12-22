@@ -1,3 +1,5 @@
+//  API client
+
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 async function request(method, url, body = null) {

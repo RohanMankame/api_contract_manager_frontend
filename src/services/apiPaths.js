@@ -1,3 +1,5 @@
+// Endpoint definitions
+
 export const API_PATHS = {
   login: "/login",
   clients: "/clients",    

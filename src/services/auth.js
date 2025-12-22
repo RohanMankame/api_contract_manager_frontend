@@ -1,4 +1,6 @@
-// src/services/auth.js
+//  Login/logout functions 
+
+
 import api from './connect';
 import API_PATHS from './apiPaths';
 
