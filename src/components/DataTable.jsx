@@ -34,7 +34,7 @@ export function DataTable({
 
   return (
     <div className="data-table-wrapper">
-      <div className="ag-theme-quartz-dark data-table-container">
+      <div className="ag-theme-quartz data-table-container">
         <AgGridReact
           rowData={dataToDisplay}
           columnDefs={columnDefs}
