@@ -6,9 +6,6 @@ import API_PATHS from '../services/apiPaths'
 export default function ClientsPage() {
   const { data: clients, loading, error } = useFetch(API_PATHS.clients)
 
-  console.log('Clients data:', clients)
-  console.log('Loading:', loading)
-  console.log('Error:', error)
 
   const columnDefs = [
     { field: 'id', headerName: 'ID' },
@@ -16,8 +13,7 @@ export default function ClientsPage() {
     { field: 'email', headerName: 'Email' },
   ]
 
-  if (error) return <p>Error: {error.message}</p>
-
+  if (error) return <p>Error: {error?.message || 'Failed to load clients'}</p>
   return (
     <div>
       <h2>Clients</h2>
