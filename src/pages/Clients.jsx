@@ -3,6 +3,7 @@ import { useFetch } from '../hooks'
 import { DataTable } from '../components/DataTable'
 import { AddEntityModal } from '../components/AddEntityModal'
 import API_PATHS from '../services/apiPaths'
+import '../styles/Clients.css'
 
 const CLIENT_FIELDS = [
   {
@@ -60,16 +61,7 @@ export default function ClientsPage() {
         <h2>Clients</h2>
         <button
           onClick={() => setIsModalOpen(true)}
-          style={{
-            padding: '10px 16px',
-            backgroundColor: '#40aec2',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: '500'
-          }}
+          className="btn btn-primary"
         >
           + Add Client
         </button>

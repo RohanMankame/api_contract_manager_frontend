@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { logout } from '../services/auth'
 import { ThemeToggle } from './ThemeToggle'
 import '../styles/TopNav.css'
+import '../styles/Button.css'
 
 export function TopNav() {
   const navigate = useNavigate()
@@ -22,7 +23,7 @@ export function TopNav() {
           <ThemeToggle />
           
           <button
-            className="logout-btn"
+            className="btn btn-primary"
             onClick={handleLogout}
           >
             Sign Out
