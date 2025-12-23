@@ -5,6 +5,13 @@
   justify-content: center;
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   padding: var(--spacing-lg);
+  position: relative;
+}
+
+.theme-toggle-corner {
+  position: absolute;
+  top: var(--spacing-xl);
+  right: var(--spacing-xl);
 }
 
 .login-box {
@@ -131,5 +138,10 @@
 
   .login-header {
     margin-bottom: var(--spacing-2xl);
+  }
+
+  .theme-toggle-corner {
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
   }
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login } from './services/auth'
+import { ThemeToggle } from './components/ThemeToggle'
 import './styles/Login.css'
 
 export default function Login() {
@@ -28,6 +29,10 @@ export default function Login() {
 
   return (
     <div className="login-container">
+      <div className="theme-toggle-corner">
+        <ThemeToggle />
+      </div>
+
       <div className="login-box">
         <div className="login-header">
           <h1>Sign In</h1>

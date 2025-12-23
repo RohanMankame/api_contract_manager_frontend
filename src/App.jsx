@@ -1,8 +1,10 @@
+// src/App.jsx
 import React from 'react'
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './Login.jsx'
-import { isLoggedIn, logout } from './services/auth'
+import { isLoggedIn } from './services/auth'
 import { TopNav } from './components/TopNav'
+import { Sidebar } from './components/Sidebar'
 import Dashboard from './pages/Dashboard'
 import ClientsPage from './pages/Clients'
 import ContractsPage from './pages/Contracts'
@@ -14,15 +16,18 @@ function ProtectedRoute({ children }) {
 
 function Home() {
   return (
-    <div>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <TopNav />
-      <div style={{ padding: '20px' }}>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/clients" element={<ClientsPage />} />
-          <Route path="/contracts" element={<ContractsPage />} />
-          <Route path="/products" element={<ProductsPage />} />
-        </Routes>
+      <div style={{ display: 'flex', flex: 1 }}>
+        <Sidebar />
+        <div style={{ flex: 1, padding: '20px', marginLeft: '70px', overflowY: 'auto' }}>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/clients" element={<ClientsPage />} />
+            <Route path="/contracts" element={<ContractsPage />} />
+            <Route path="/products" element={<ProductsPage />} />
+          </Routes>
+        </div>
       </div>
     </div>
   )
