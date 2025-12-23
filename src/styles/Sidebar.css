@@ -1,6 +1,6 @@
 
 .sidebar {
-  width: 70px;
+  width: 75px;
   background-color: var(--color-surface);
   border-right: 1px solid var(--color-border);
   padding: var(--spacing-lg) 0;
@@ -12,6 +12,17 @@
   transition: width 0.3s ease;
   z-index: 50;
 }
+
+/* Hide scrollbar for closed sidebar */
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 
 .sidebar.open {
   width: 260px;
@@ -46,12 +57,12 @@
 
 .nav-item:hover {
   background-color: var(--color-border);
-  color: var(--color-text-primary);
+  color: var(--color-primary);
 }
 
 .nav-item.active {
   background-color: var(--color-primary);
-  color: #ffffff;
+  color: var(--color-surface);
 }
 
 .nav-icon {

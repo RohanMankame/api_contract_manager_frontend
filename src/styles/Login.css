@@ -75,6 +75,7 @@
   border-radius: var(--radius-md);
   background-color: var(--color-surface-secondary);
   color: var(--color-text-primary);
+  transition: all 0.3s ease;
 }
 
 .form-group input:focus {
@@ -86,6 +87,14 @@
 
 .form-group input::placeholder {
   color: var(--color-text-tertiary);
+}
+
+/* Fix autofill background color */
+.form-group input:-webkit-autofill,
+.form-group input:-webkit-autofill:hover,
+.form-group input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-surface-secondary) inset !important;
+  -webkit-text-fill-color: var(--color-text-primary) !important;
 }
 
 .error-message {
@@ -110,6 +119,7 @@
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  transition: all 0.3s ease;
 }
 
 .submit-btn:hover:not(:disabled) {
