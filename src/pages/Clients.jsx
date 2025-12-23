@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { useFetch } from '../hooks'
 import { DataTable } from '../components/DataTable'
 import { AddEntityModal } from '../components/AddEntityModal'
+import { EditEntityModal } from '../components/EditEntityModal'
 import API_PATHS from '../services/apiPaths'
-import '../styles/Clients.css'
+
 
 const CLIENT_FIELDS = [
   {
@@ -29,7 +30,8 @@ const CLIENT_FIELDS = [
     required: true,
     placeholder: 'Enter phone number',
     jsonKey: 'phone_number'
-  },{
+  },
+  {
     name: 'address',
     label: 'Address',
     type: 'text',
@@ -41,10 +43,21 @@ const CLIENT_FIELDS = [
 
 export default function ClientsPage() {
   const { data: clients, loading, error, refetch } = useFetch(API_PATHS.clients)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [selectedClient, setSelectedClient] = useState(null)
 
   const handleEntityAdded = () => {
     refetch()
+  }
+
+  const handleEntityUpdated = () => {
+    refetch()
+  }
+
+  const handleRowDoubleClick = (event) => {
+    setSelectedClient(event.data)
+    setIsEditModalOpen(true)
   }
 
   const columnDefs = [
@@ -60,22 +73,37 @@ export default function ClientsPage() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2>Clients</h2>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => setIsAddModalOpen(true)}
           className="btn btn-primary"
         >
           + Add Client
         </button>
       </div>
 
-      <DataTable rowData={clients} columnDefs={columnDefs} loading={loading} />
+      <DataTable 
+        rowData={clients} 
+        columnDefs={columnDefs} 
+        loading={loading}
+        onRowClicked={handleRowDoubleClick}
+      />
 
       <AddEntityModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
         onEntityAdded={handleEntityAdded}
         title="Add New Client"
         endpoint="/clients"
         fields={CLIENT_FIELDS}
+      />
+
+      <EditEntityModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onEntityUpdated={handleEntityUpdated}
+        title="Edit Client"
+        endpoint="/clients"
+        fields={CLIENT_FIELDS}
+        entityData={selectedClient}
       />
     </div>
   )

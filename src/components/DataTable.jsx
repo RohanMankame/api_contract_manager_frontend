@@ -42,6 +42,12 @@ export function DataTable({
     flex: 1,
   }
 
+  const handleRowDoubleClick = (event) => {
+    if (onRowClicked) {
+      onRowClicked(event)
+    }
+  }
+
   if (loading) return <div className="loading">Loading...</div>
   
   let dataToDisplay = rowData
@@ -63,7 +69,7 @@ export function DataTable({
           pagination={pagination}
           paginationPageSize={pageSize}
           paginationPageSizeSelector={[5,10, 20, 50, 100]}
-          onRowClicked={onRowClicked}
+          onRowDoubleClicked={handleRowDoubleClick}
           rowHeight={40}
           headerHeight={50}
           domLayout="autoHeight"

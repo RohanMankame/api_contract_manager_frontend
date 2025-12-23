@@ -1,24 +1,31 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import api from '../services/connect'
 import '../styles/EntityModalWindow.css'
 
-export function AddEntityModal({ 
+export function EditEntityModal({ 
   isOpen, 
   onClose, 
-  onEntityAdded,
-  title = 'Add New Item',
+  onEntityUpdated,
+  title = 'Edit Item',
   endpoint = '/items',
-  fields = [] // Array of field definitions
+  fields = [],
+  entityData = null
 }) {
-  const [formData, setFormData] = useState(() => {
-    const initial = {}
-    fields.forEach(field => {
-      initial[field.name] = ''
-    })
-    return initial
-  })
+  const [formData, setFormData] = useState({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+
+  // Initialize form data when entityData changes
+  useEffect(() => {
+    if (entityData && isOpen) {
+      const initial = {}
+      fields.forEach(field => {
+        initial[field.name] = entityData[field.jsonKey || field.name] || ''
+      })
+      setFormData(initial)
+      setError(null)
+    }
+  }, [entityData, isOpen, fields])
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -49,20 +56,15 @@ export function AddEntityModal({
         }
       })
 
-      await api.post(endpoint, payload)
+      // Construct the endpoint with the ID
+      const updateEndpoint = `${endpoint}/${entityData.id}`
+      await api.put(updateEndpoint, payload)
       
-      // Reset form
-      const newFormData = {}
-      fields.forEach(field => {
-        newFormData[field.name] = ''
-      })
-      setFormData(newFormData)
-      
-      onEntityAdded()
+      onEntityUpdated()
       onClose()
     } catch (err) {
-      setError(err.message || `Failed to create item`)
-      console.error('Error creating item:', err)
+      setError(err.message || `Failed to update item`)
+      console.error('Error updating item:', err)
     } finally {
       setLoading(false)
     }
@@ -92,7 +94,7 @@ export function AddEntityModal({
                 <textarea
                   id={field.name}
                   name={field.name}
-                  value={formData[field.name]}
+                  value={formData[field.name] || ''}
                   onChange={handleChange}
                   required={field.required}
                   placeholder={field.placeholder || ''}
@@ -103,7 +105,7 @@ export function AddEntityModal({
                   type="checkbox"
                   id={field.name}
                   name={field.name}
-                  checked={formData[field.name]}
+                  checked={formData[field.name] || false}
                   onChange={handleChange}
                 />
               ) : (
@@ -111,7 +113,7 @@ export function AddEntityModal({
                   type={field.type || 'text'}
                   id={field.name}
                   name={field.name}
-                  value={formData[field.name]}
+                  value={formData[field.name] || ''}
                   onChange={handleChange}
                   required={field.required}
                   placeholder={field.placeholder || ''}
@@ -134,7 +136,7 @@ export function AddEntityModal({
               className="btn-save"
               disabled={loading}
             >
-              {loading ? 'Saving...' : 'Save'}
+              {loading ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </form>
