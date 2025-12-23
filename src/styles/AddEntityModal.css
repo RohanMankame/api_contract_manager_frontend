@@ -1,0 +1,212 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  padding: 0;
+  overflow: hidden;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  position: sticky;
+  top: 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #1f2937;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  color: #1f2937;
+}
+
+.modal-form {
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.required {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.form-group input[type="checkbox"] {
+  width: auto;
+  margin-top: 8px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.error-message {
+  background-color: #fee2e2;
+  color: #dc2626;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+  border-top: 1px solid #e5e7eb;
+  justify-content: flex-end;
+  background-color: #f9fafb;
+  position: sticky;
+  bottom: 0;
+}
+
+.btn-cancel,
+.btn-save {
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.btn-cancel {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background-color: #d1d5db;
+}
+
+.btn-save {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-save:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.btn-cancel:disabled,
+.btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Dark mode support */
+.dark-mode .modal-content {
+  background-color: #1f2937;
+  color: #f3f4f6;
+}
+
+.dark-mode .modal-header {
+  background-color: #111827;
+  border-bottom-color: #374151;
+}
+
+.dark-mode .modal-header h2 {
+  color: #f3f4f6;
+}
+
+.dark-mode .modal-close {
+  color: #9ca3af;
+}
+
+.dark-mode .modal-close:hover {
+  color: #f3f4f6;
+}
+
+.dark-mode .form-group label {
+  color: #e5e7eb;
+}
+
+.dark-mode .form-group input,
+.dark-mode .form-group textarea {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+.dark-mode .form-group input:focus,
+.dark-mode .form-group textarea:focus {
+  border-color: #3b82f6;
+}
+
+.dark-mode .modal-footer {
+  border-top-color: #374151;
+  background-color: #111827;
+}
+
+.dark-mode .btn-cancel {
+  background-color: #4b5563;
+  color: #e5e7eb;
+}
+
+.dark-mode .btn-cancel:hover:not(:disabled) {
+  background-color: #5a6370;
+}
