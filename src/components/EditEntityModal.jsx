@@ -6,6 +6,7 @@ export function EditEntityModal({
   isOpen, 
   onClose, 
   onEntityUpdated,
+  onDeleteClick,
   title = 'Edit Item',
   endpoint = '/items',
   fields = [],
@@ -125,19 +126,29 @@ export function EditEntityModal({
           <div className="modal-footer">
             <button
               type="button"
-              className="btn-cancel"
-              onClick={onClose}
+              className="btn-delete"
+              onClick={() => onDeleteClick(entityData)}
               disabled={loading}
             >
-              Cancel
+              Delete
             </button>
-            <button
-              type="submit"
-              className="btn-save"
-              disabled={loading}
-            >
-              {loading ? 'Saving...' : 'Save Changes'}
-            </button>
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: '10px' }}>
+              <button
+                type="button"
+                className="btn-cancel"
+                onClick={onClose}
+                disabled={loading}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn-save"
+                disabled={loading}
+              >
+                {loading ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
           </div>
         </form>
       </div>

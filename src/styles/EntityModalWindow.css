@@ -20,7 +20,8 @@
   padding: 0;
   overflow: hidden;
   max-height: 90vh;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-header {
@@ -212,4 +213,46 @@
 
 .dark-mode .btn-cancel:hover:not(:disabled) {
   background-color: #5a6370;
+}
+
+
+.btn-delete {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-delete:hover:not(:disabled) {
+  background-color: #fecaca;
+  color: #991b1b;
+}
+
+.btn-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.delete-confirmation {
+  padding: 20px;
+}
+
+.delete-confirmation p {
+  margin: 0 0 20px 0;
+  color: #374151;
+  font-size: 14px;
+}
+
+.dark-mode .delete-confirmation p {
+  color: #e5e7eb;
+}
+
+.delete-confirmation {
+  padding: 20px;
+  flex-shrink: 0;
 }

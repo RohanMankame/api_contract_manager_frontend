@@ -3,8 +3,8 @@ import { useFetch } from '../hooks'
 import { DataTable } from '../components/DataTable'
 import { AddEntityModal } from '../components/AddEntityModal'
 import { EditEntityModal } from '../components/EditEntityModal'
+import { DeleteEntityModal } from '../components/DeleteEntityModal'
 import API_PATHS from '../services/apiPaths'
-
 
 const CLIENT_FIELDS = [
   {
@@ -45,6 +45,7 @@ export default function ClientsPage() {
   const { data: clients, loading, error, refetch } = useFetch(API_PATHS.clients)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [selectedClient, setSelectedClient] = useState(null)
 
   const handleEntityAdded = () => {
@@ -55,9 +56,19 @@ export default function ClientsPage() {
     refetch()
   }
 
+  const handleEntityDeleted = () => {
+    refetch()
+  }
+
   const handleRowDoubleClick = (event) => {
     setSelectedClient(event.data)
     setIsEditModalOpen(true)
+  }
+
+  const handleDeleteClick = (entity) => {
+    setSelectedClient(entity)
+    setIsEditModalOpen(false)
+    setIsDeleteModalOpen(true)
   }
 
   const columnDefs = [
@@ -100,9 +111,19 @@ export default function ClientsPage() {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         onEntityUpdated={handleEntityUpdated}
+        onDeleteClick={handleDeleteClick}
         title="Edit Client"
         endpoint="/clients"
         fields={CLIENT_FIELDS}
+        entityData={selectedClient}
+      />
+
+      <DeleteEntityModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onEntityDeleted={handleEntityDeleted}
+        title="Delete Client"
+        endpoint="/clients"
         entityData={selectedClient}
       />
     </div>
