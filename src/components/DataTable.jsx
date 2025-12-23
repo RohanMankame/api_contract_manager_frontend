@@ -1,8 +1,7 @@
-// src/components/DataTable.jsx
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community'
+import { ModuleRegistry, AllCommunityModule, themeQuartz } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
-import 'ag-grid-community/styles/ag-grid.css'
-import 'ag-grid-community/styles/ag-theme-quartz.css'
+import { useThemeContext } from '../contexts/ThemeContext'
+import { useMemo } from 'react'
 import '../styles/DataTable.css'
 
 ModuleRegistry.registerModules([AllCommunityModule])
@@ -15,6 +14,27 @@ export function DataTable({
   pagination = true,
   pageSize = 10
 }) {
+  const { isDarkMode } = useThemeContext()
+
+  const theme = useMemo(() => {
+    return isDarkMode ? themeQuartz
+      .withParams({
+          backgroundColor: "#1f2836",
+          browserColorScheme: "dark",
+          chromeBackgroundColor: {
+              ref: "foregroundColor",
+              mix: 0.07,
+              onto: "backgroundColor"
+          },
+          foregroundColor: "#FFF",
+          headerFontSize: 14
+      }) : themeQuartz
+      .withParams({
+          browserColorScheme: "light",
+          headerFontSize: 14
+      });
+  }, [isDarkMode])
+
   const defaultColDef = {
     sortable: true,
     filter: true,
@@ -34,17 +54,19 @@ export function DataTable({
 
   return (
     <div className="data-table-wrapper">
-      <div className="ag-theme-quartz data-table-container">
+      <div className="data-table-container">
         <AgGridReact
+          theme={theme}
           rowData={dataToDisplay}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
           pagination={pagination}
           paginationPageSize={pageSize}
-          paginationPageSizeSelector={[10, 20, 50, 100]}
+          paginationPageSizeSelector={[5,10, 20, 50, 100]}
           onRowClicked={onRowClicked}
           rowHeight={40}
           headerHeight={50}
+          domLayout="autoHeight"
         />
       </div>
     </div>

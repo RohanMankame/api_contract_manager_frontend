@@ -1,8 +1,8 @@
-import { useTheme } from '../hooks/useTheme'
+import { useThemeContext } from '../contexts/ThemeContext'
 import '../styles/ThemeToggle.css'
 
 export function ThemeToggle() {
-  const { isDarkMode, toggleTheme } = useTheme()
+  const { isDarkMode, toggleTheme } = useThemeContext()
 
   return (
     <button
