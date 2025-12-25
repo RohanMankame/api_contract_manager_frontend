@@ -85,7 +85,7 @@ export default function ClientsPage() {
         <h2>Clients</h2>
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="btn btn-primary"
+          className="btn btn-add"
         >
           + Add Client
         </button>

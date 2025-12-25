@@ -7,8 +7,8 @@ export function AddEntityModal({
   onClose, 
   onEntityAdded,
   title = 'Add New Item',
-  endpoint = '/items',
-  fields = [] // Array of field definitions
+  endpoint = '/',
+  fields = [] 
 }) {
   const [formData, setFormData] = useState(() => {
     const initial = {}
@@ -21,10 +21,10 @@ export function AddEntityModal({
   const [error, setError] = useState(null)
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target
+    const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: value
     }))
   }
 
@@ -34,17 +34,14 @@ export function AddEntityModal({
     setError(null)
 
     try {
-      // Build the request payload based on field mappings
       const payload = {}
       fields.forEach(field => {
         const value = formData[field.name]
-        const key = field.jsonKey || field.name
+        const key = field.jsonKey
         
         if (field.type === 'number') {
           payload[key] = Number(value)
-        } else if (field.type === 'checkbox') {
-          payload[key] = value
-        } else {
+        }  else {
           payload[key] = value
         }
       })
@@ -95,15 +92,7 @@ export function AddEntityModal({
                   value={formData[field.name]}
                   onChange={handleChange}
                   required={field.required}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '6px',
-                    fontSize: '14px',
-                    fontFamily: 'inherit',
-                    boxSizing: 'border-box'
-                  }}
+                  className='dropdown'
                 >
                   <option value="">Select {field.label}</option>
                   {Array.isArray(field.options) && field.options.map(option => (
