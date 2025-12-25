@@ -70,7 +70,7 @@ export default function ProductsPage() {
         <h2>Products</h2>
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="btn btn-primary"
+          className="btn-add"
         >
           + Add Product
         </button>
