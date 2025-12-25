@@ -88,7 +88,31 @@ export function AddEntityModal({
                 {field.required && <span className="required">*</span>}
               </label>
               
-              {field.type === 'textarea' ? (
+              {field.type === 'select' ? (
+                <select
+                  id={field.name}
+                  name={field.name}
+                  value={formData[field.name]}
+                  onChange={handleChange}
+                  required={field.required}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '6px',
+                    fontSize: '14px',
+                    fontFamily: 'inherit',
+                    boxSizing: 'border-box'
+                  }}
+                >
+                  <option value="">Select {field.label}</option>
+                  {Array.isArray(field.options) && field.options.map(option => (
+                    <option key={option.id} value={option.id}>
+                      {option.company_name || option.api_name}
+                    </option>
+                  ))}
+                </select>
+              ) : field.type === 'textarea' ? (
                 <textarea
                   id={field.name}
                   name={field.name}
