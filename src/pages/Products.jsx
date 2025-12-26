@@ -28,6 +28,7 @@ const PRODUCT_FIELDS = [
 
 export default function ProductsPage() {
   const { data: products, loading, error, refetch } = useFetch(API_PATHS.products)
+  const [searchTerm, setSearchTerm] = useState('')
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -68,12 +69,28 @@ export default function ProductsPage() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2>Products</h2>
-        <button
-          onClick={() => setIsAddModalOpen(true)}
-          className="btn-add"
-        >
-          + Add Product
-        </button>
+        <input
+            type="text"
+            placeholder="Search products..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              padding: '8px 12px',
+              borderRadius: '6px',
+              border: '1px solid #d1d5db',
+              fontSize: '14px',
+              width: '250px'
+            }}
+          />
+        <div style={{ display: 'flex', gap: '10px' }}>
+          
+          <button
+            onClick={() => setIsAddModalOpen(true)}
+            className="btn-add"
+          >
+            + Add Product
+          </button>
+        </div>
       </div>
 
       <DataTable 
@@ -81,6 +98,7 @@ export default function ProductsPage() {
         columnDefs={columnDefs} 
         loading={loading}
         onRowClicked={handleRowDoubleClick}
+        quickFilterText={searchTerm}
       />
 
       <AddEntityModal

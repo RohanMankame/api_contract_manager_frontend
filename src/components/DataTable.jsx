@@ -12,7 +12,8 @@ export function DataTable({
   loading = false,
   onRowClicked,
   pagination = true,
-  pageSize = 10
+  pageSize = 10,
+  quickFilterText = ''
 }) {
   const { isDarkMode } = useThemeContext()
 
@@ -70,6 +71,7 @@ export function DataTable({
           paginationPageSize={pageSize}
           paginationPageSizeSelector={[5,10, 20, 50, 100]}
           onRowDoubleClicked={handleRowDoubleClick}
+          quickFilterText={quickFilterText}
           rowHeight={40}
           headerHeight={50}
           domLayout="autoHeight"
