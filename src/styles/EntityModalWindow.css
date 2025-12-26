@@ -395,3 +395,12 @@
   background-color: #fee2e2;
   color: #b91c1c;
 }
+
+
+.tier-info { display:flex; gap:18px; align-items:center; flex:1; }
+.tier-range, .tier-dates { display:flex; flex-direction:column; gap:4px; }
+.tier-label { color:#6b7280; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; }
+.tier-value { font-weight:700; color:#111827; font-size:14px; }
+.tier-numbers { display:flex; gap:12px; align-items:center; }
+.tier-small { display:flex; flex-direction:column; align-items:center; gap:4px; min-width:72px; }
+.tier-actions { display:flex; gap:8px; align-items:center; }

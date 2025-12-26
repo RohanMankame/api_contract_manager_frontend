@@ -10,7 +10,8 @@ export default function SubscriptionsList({
   onAdd,
   onEdit,
   onDelete,
-  onOpenTiers,
+  onOpenTiers,     
+  onDeleteTier,    
 }) {
   const [expandedId, setExpandedId] = useState(null)
   const [tiersBySub, setTiersBySub] = useState({})
@@ -23,6 +24,15 @@ export default function SubscriptionsList({
     }
 
     setExpandedId(sub.id)
+
+    // Prefer nested tiers on subscription object (back-end may provide them)
+    const nested = sub.tiers || sub.subscription_tiers
+    if (nested && nested.length) {
+      setTiersBySub(prev => ({ ...prev, [sub.id]: nested }))
+      return
+    }
+
+    // Otherwise fetch all tiers and filter
     if (!tiersBySub[sub.id]) {
       setLoadingTiersId(sub.id)
       try {
@@ -40,17 +50,12 @@ export default function SubscriptionsList({
 
   async function handleDeleteTier(e, tierId, subId) {
     e.stopPropagation()
+    if (!onDeleteTier) return
     const ok = window.confirm('Delete this tier? This cannot be undone.')
     if (!ok) return
-    try {
-      await api.delete(`${API_PATHS.subscription_tiers}/${tierId}`)
-      const res = await api.get(API_PATHS.subscription_tiers)
-      const all = res?.subscription_tiers || res || []
-      setTiersBySub(prev => ({ ...prev, [subId]: all.filter(t => t.subscription_id === subId) }))
-    } catch (err) {
-      console.error('Failed to delete tier', err)
-      alert('Failed to delete tier')
-    }
+    await onDeleteTier(tierId, subId)
+    // refresh the local tiers cache by removing the deleted tier if present
+    setTiersBySub(prev => ({ ...prev, [subId]: (prev[subId] || []).filter(t => t.id !== tierId) }))
   }
 
   return (
@@ -118,45 +123,44 @@ export default function SubscriptionsList({
                         <strong>Archived:</strong> {s.is_archived ? 'Yes' : 'No'}
                       </div>
 
-                      <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <h4 style={{ margin: 0 }}>Tiers</h4>
-                          <div style={{ display: 'flex', gap: 8 }}>
-                            <button className="btn" onClick={(e) => { e.stopPropagation(); onOpenTiers(s) }}>Add / Manage Tiers</button>
-                          </div>
-                        </div>
-
-                        {loadingTiersId === s.id ? <p>Loading tiers...</p> : (
+                      <div className="tier-summary-list">
+                        {(loadingTiersId === s.id) ? <p>Loading tiers...</p> : (
                           tiers.length === 0 ? <p style={{ color: '#6b7280' }}>No tiers for this subscription.</p> : (
-                            <table className="tier-table" style={{ marginTop: 12 }}>
-                              <thead>
-                                <tr>
-                                  <th>Min</th>
-                                  <th>Max</th>
-                                  <th>Dates</th>
-                                  <th>Base Price</th>
-                                  <th>Per Tier</th>
-                                  <th>Archived</th>
-                                  <th>Actions</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {tiers.map(t => (
-                                  <tr key={t.id}>
-                                    <td>{t.min_calls}</td>
-                                    <td>{t.max_calls}</td>
-                                    <td>{(t.start_date || '').split('T')[0]} - {(t.end_date || '').split('T')[0]}</td>
-                                    <td>{t.base_price}</td>
-                                    <td>{t.price_per_tier}</td>
-                                    <td>{t.is_archived ? 'Yes' : 'No'}</td>
-                                    <td style={{ display: 'flex', gap: 8 }}>
-                                      <button className="btn" onClick={(e) => { e.stopPropagation(); onOpenTiers(s) }}>Edit</button>
-                                      <button className="btn-delete" onClick={(e) => handleDeleteTier(e, t.id, s.id)}>Delete</button>
-                                    </td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
+                            tiers.map(t => {
+                              const start = t.start_date ? t.start_date.split('T')[0] : '—'
+                              const end = t.end_date ? t.end_date.split('T')[0] : '—'
+                              return (
+                                <div key={t.id} className="tier-summary" onClick={(e) => e.stopPropagation()}>
+                                <div className="tier-info">
+                                  <div className="tier-range">
+                                    <div className="tier-label">Calls</div>
+                                    <div className="tier-value">{t.min_calls} — {t.max_calls}</div>
+                                  </div>
+
+                                  <div className="tier-dates">
+                                    <div className="tier-label">Dates</div>
+                                    <div className="tier-value">{start} → {end}</div>
+                                  </div>
+                                </div>
+
+                                <div className="tier-numbers">
+                                  <div className="tier-small">
+                                    <div className="tier-label">Base</div>
+                                    <div className="tier-value">${t.base_price}</div>
+                                  </div>
+                                  <div className="tier-small">
+                                    <div className="tier-label">Per</div>
+                                    <div className="tier-value">${t.price_per_tier}</div>
+                                  </div>
+                                </div>
+
+                                <div className="tier-actions">
+                                  <button className="btn-sm" onClick={() => onOpenTiers(s, t)}>Edit</button>
+                                  <button className="btn-sm btn-delete" onClick={(e) => handleDeleteTier(e, t.id, s.id)}>Delete</button>
+                                </div>
+                              </div>
+                              )
+                            })
                           )
                         )}
                       </div>

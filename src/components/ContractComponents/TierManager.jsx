@@ -4,10 +4,10 @@ import api from '../../services/connect'
 import API_PATHS from '../../services/apiPaths'
 import '../../styles/EntityModalWindow.css'
 
-export default function TierManager({ subscription, onClose }) {
+export default function TierManager({ subscription, initialEditTierId = null, onClose }) {
   const [tiers, setTiers] = useState([])
   const [loading, setLoading] = useState(false)
-  const [mode, setMode] = useState('view') 
+  const [mode, setMode] = useState('view') // 'view' | 'add' | 'edit'
   const [form, setForm] = useState({
     id: '',
     min_calls: 0,
@@ -39,6 +39,17 @@ export default function TierManager({ subscription, onClose }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subscription])
 
+  // Auto-open edit if initial tier id is supplied and tiers are loaded
+  useEffect(() => {
+    if (initialEditTierId && tiers.length) {
+      const t = tiers.find(x => x.id === initialEditTierId)
+      if (t) {
+        openEdit(t)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialEditTierId, tiers])
+
   function openAdd() {
     setMode('add')
     setForm({ id: '', min_calls: 0, max_calls: 0, start_date: '', end_date: '', base_price: 0, price_per_tier: 0, is_archived: false })
@@ -58,7 +69,6 @@ export default function TierManager({ subscription, onClose }) {
       is_archived: !!t.is_archived,
     })
     setError(null)
-    // keep the view visible (mode controls form rendering)
   }
 
   async function handleSubmit(e) {
@@ -112,26 +122,21 @@ export default function TierManager({ subscription, onClose }) {
     <div className="modal-overlay">
       <div className="modal-content" style={{ maxWidth: 760 }}>
         <div className="modal-header">
-          <h2 style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <span>⚙️</span>
-            <span>Tiers — {subscription.product?.api_name || subscription.product_id}</span>
-          </h2>
+          <h2>Tiers — {subscription.product?.api_name || subscription.product_id}</h2>
           <button className="modal-close" onClick={onClose}>×</button>
         </div>
 
         <div className="modal-form">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h4 style={{ margin: 0 }}>Subscription Tiers</h4>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button className="btn" onClick={openAdd}>Add Tier</button>
+            <div>
+              <button className="btn-add" onClick={openAdd}>Add Tier</button>
               <button className="btn-cancel" onClick={onClose}>Close</button>
             </div>
           </div>
 
           {loading ? <p>Loading tiers...</p> : (
-            tiers.length === 0 ? (
-              <p style={{ color: '#6b7280' }}>No tiers for this subscription.</p>
-            ) : (
+            tiers.length === 0 ? <p style={{ color: '#6b7280' }}>No tiers for this subscription.</p> : (
               <div className="tier-list">
                 {tiers.map(t => (
                   <div key={t.id} className="tier-card">
@@ -158,8 +163,8 @@ export default function TierManager({ subscription, onClose }) {
                       <div className={`archived-pill ${t.is_archived ? 'active' : ''}`}>{t.is_archived ? 'Archived' : 'Active'}</div>
 
                       <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-                        <button className="btn-sm" onClick={() => openEdit(t)}>✏️ Edit</button>
-                        <button className="btn-sm btn-delete" onClick={() => handleDelete(t.id)}>🗑️ Delete</button>
+                        <button className="btn-sm" onClick={() => openEdit(t)}>Edit</button>
+                        <button className="btn-sm btn-delete" onClick={() => handleDelete(t.id)}>Delete</button>
                       </div>
                     </div>
                   </div>
@@ -211,7 +216,7 @@ export default function TierManager({ subscription, onClose }) {
 
               <div className="modal-footer" style={{ marginTop: 12 }}>
                 <button type="button" className="btn-cancel" onClick={() => setMode('view')}>Cancel</button>
-                <button type="submit" className="btn-save">{mode === 'add' ? 'Add Tier' : 'Save Tier'}</button>
+                <button type="submit" className="btn-add">{mode === 'add' ? 'Add Tier' : 'Save Tier'}</button>
               </div>
             </form>
           )}

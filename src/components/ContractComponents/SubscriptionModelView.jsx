@@ -16,8 +16,9 @@ export default function SubscriptionModelView({ contractId }) {
   const [formMode, setFormMode] = useState('add')
   const [editing, setEditing] = useState(null)
 
-  // tiers modal
+  // tiers modal (subscription and optional initialTierId)
   const [tierSub, setTierSub] = useState(null)
+  const [initialTierId, setInitialTierId] = useState(null)
 
   async function fetchProducts() {
     try {
@@ -76,8 +77,21 @@ export default function SubscriptionModelView({ contractId }) {
     await fetchSubscriptions()
   }
 
-  function openTiers(sub) {
+  function openTiers(sub, tier = null) {
     setTierSub(sub)
+    setInitialTierId(tier ? tier.id : null)
+  }
+
+  async function handleDeleteTier(tierId, subId) {
+    const ok = window.confirm('Delete this tier? This cannot be undone.')
+    if (!ok) return
+    try {
+      await api.delete(`${API_PATHS.subscription_tiers}/${tierId}`)
+      await fetchSubscriptions()
+    } catch (err) {
+      console.error('Failed to delete tier', err)
+      alert('Failed to delete tier')
+    }
   }
 
   return (
@@ -90,6 +104,7 @@ export default function SubscriptionModelView({ contractId }) {
         onEdit={openEdit}
         onDelete={handleDelete}
         onOpenTiers={openTiers}
+        onDeleteTier={handleDeleteTier}
       />
 
       <SubscriptionFormModal
@@ -104,7 +119,8 @@ export default function SubscriptionModelView({ contractId }) {
       {tierSub && (
         <TierManager
           subscription={tierSub}
-          onClose={() => { setTierSub(null); fetchSubscriptions(); }}
+          initialEditTierId={initialTierId}
+          onClose={() => { setTierSub(null); setInitialTierId(null); fetchSubscriptions(); }}
         />
       )}
     </div>
