@@ -10,6 +10,8 @@ export default function ContractsPage() {
   const { data: contractsData, loading, error, refetch } = useFetch(API_PATHS.contracts)
   const { data: clientsData } = useFetch(API_PATHS.clients)
   
+
+  const [searchTerm, setSearchTerm] = useState('')
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -82,6 +84,19 @@ export default function ContractsPage() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2>Contracts</h2>
+        <input
+            type="text"
+            placeholder="Search contracts..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              padding: '8px 12px',
+              borderRadius: '6px',
+              border: '1px solid #d1d5db',
+              fontSize: '14px',
+              width: '250px'
+            }}
+          />
         <button
           onClick={() => setIsAddModalOpen(true)}
           className="btn-add"
@@ -95,6 +110,7 @@ export default function ContractsPage() {
         columnDefs={columnDefs} 
         loading={loading}
         onRowClicked={handleRowClick}
+        quickFilterText={searchTerm}
       />
 
       <AddEntityModal
@@ -106,7 +122,7 @@ export default function ContractsPage() {
         fields={CONTRACT_FIELDS}
       />
 
-      {/* <EditEntityModal
+      <EditEntityModalContract
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         onEntityUpdated={refetch}
@@ -115,7 +131,7 @@ export default function ContractsPage() {
         endpoint={API_PATHS.contracts}
         fields={CONTRACT_FIELDS}
         entityData={selectedContract}
-      /> */}
+      />
 
       <DeleteEntityModal
         isOpen={isDeleteModalOpen}
