@@ -3,7 +3,9 @@ import { useFetch } from '../hooks'
 import { DataTable } from "../components/DataTable";
 import { AddEntityModal } from "../components/AddEntityModal";
 import { DeleteEntityModal } from "../components/DeleteEntityModal";
-import { EditEntityModalContract } from '../components/ContractComponents/EditEntityModalContract';
+//import { EditEntityModalContract } from '../components/ContractComponents/EditEntityModalContract';
+//import {ViewEntityModalContract} from '../components/ContractComponents/ViewEntityModalContract';
+import { ViewContractModal } from '../components/ContractComponents/ViewContractModal';
 import API_PATHS from '../services/apiPaths'
 
 export default function ContractsPage() {
@@ -123,10 +125,19 @@ export default function ContractsPage() {
         fields={CONTRACT_FIELDS}
       />
 
-      <EditEntityModalContract
+      {/* <EditEntityModalContract
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         onEntityUpdated={refetch}
+        onDeleteClick={handleDeleteClick}
+        title="Edit Contract"
+        endpoint={API_PATHS.contracts}
+        fields={CONTRACT_FIELDS}
+        entityData={selectedContract}
+      /> */}
+      <ViewContractModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
         onDeleteClick={handleDeleteClick}
         title="Edit Contract"
         endpoint={API_PATHS.contracts}

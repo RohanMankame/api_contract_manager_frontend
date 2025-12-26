@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard'
 import ClientsPage from './pages/Clients'
 import ContractsPage from './pages/Contracts'
 import ProductsPage from './pages/Products'
+import EditContractPage from './pages/EditContractPage.jsx'
 
 function ProtectedRoute({ children }) {
   return isLoggedIn() ? children : <Navigate to="/login" replace />
@@ -27,6 +28,7 @@ function Home() {
             <Route path="/clients" element={<ClientsPage />} />
             <Route path="/contracts" element={<ContractsPage />} />
             <Route path="/products" element={<ProductsPage />} />
+            <Route path="/contracts/:id/edit" element={<EditContractPage />} />
           </Routes>
         </div>
       </div>
