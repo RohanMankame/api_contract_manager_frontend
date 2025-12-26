@@ -7,7 +7,7 @@ import '../../styles/EntityModalWindow.css'
 export default function TierManager({ subscription, onClose }) {
   const [tiers, setTiers] = useState([])
   const [loading, setLoading] = useState(false)
-  const [mode, setMode] = useState('view') // 'view' | 'add' | 'edit'
+  const [mode, setMode] = useState('view') 
   const [form, setForm] = useState({
     id: '',
     min_calls: 0,
@@ -58,6 +58,7 @@ export default function TierManager({ subscription, onClose }) {
       is_archived: !!t.is_archived,
     })
     setError(null)
+    // keep the view visible (mode controls form rendering)
   }
 
   async function handleSubmit(e) {
@@ -111,50 +112,59 @@ export default function TierManager({ subscription, onClose }) {
     <div className="modal-overlay">
       <div className="modal-content" style={{ maxWidth: 760 }}>
         <div className="modal-header">
-          <h2>Tiers — {subscription.product?.api_name || subscription.product_id}</h2>
+          <h2 style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <span>⚙️</span>
+            <span>Tiers — {subscription.product?.api_name || subscription.product_id}</span>
+          </h2>
           <button className="modal-close" onClick={onClose}>×</button>
         </div>
 
         <div className="modal-form">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
             <h4 style={{ margin: 0 }}>Subscription Tiers</h4>
-            <div>
-              <button className="btn-add" onClick={openAdd}>Add Tier</button>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button className="btn" onClick={openAdd}>Add Tier</button>
               <button className="btn-cancel" onClick={onClose}>Close</button>
             </div>
           </div>
 
           {loading ? <p>Loading tiers...</p> : (
-            tiers.length === 0 ? <p style={{ color: '#6b7280' }}>No tiers for this subscription.</p> : (
-              <table className="tier-table" style={{ marginTop: 12 }}>
-                <thead>
-                  <tr>
-                    <th>Min</th>
-                    <th>Max</th>
-                    <th>Dates</th>
-                    <th>Base Price</th>
-                    <th>Per Tier</th>
-                    <th>Archived</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tiers.map(t => (
-                    <tr key={t.id}>
-                      <td>{t.min_calls}</td>
-                      <td>{t.max_calls}</td>
-                      <td>{(t.start_date || '').split('T')[0]} - {(t.end_date || '').split('T')[0]}</td>
-                      <td>{t.base_price}</td>
-                      <td>{t.price_per_tier}</td>
-                      <td>{t.is_archived ? 'Yes' : 'No'}</td>
-                      <td style={{ display: 'flex', gap: 8 }}>
-                        <button className="btn" onClick={() => openEdit(t)}>Edit</button>
-                        <button className="btn-delete" onClick={() => handleDelete(t.id)}>Delete</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            tiers.length === 0 ? (
+              <p style={{ color: '#6b7280' }}>No tiers for this subscription.</p>
+            ) : (
+              <div className="tier-list">
+                {tiers.map(t => (
+                  <div key={t.id} className="tier-card">
+                    <div className="tier-left">
+                      <div className="tier-range">
+                        <div className="tier-label">Calls</div>
+                        <div className="tier-value">{t.min_calls} — {t.max_calls}</div>
+                      </div>
+
+                      <div className="tier-dates">
+                        <div className="tier-label">Dates</div>
+                        <div className="tier-value">{(t.start_date || '').split('T')[0] || '—'} → {(t.end_date || '').split('T')[0] || '—'}</div>
+                      </div>
+                    </div>
+
+                    <div className="tier-center">
+                      <div className="tier-label">Base</div>
+                      <div className="tier-value">${t.base_price}</div>
+                      <div className="tier-label" style={{ marginTop: 6 }}>Per</div>
+                      <div className="tier-value">${t.price_per_tier}</div>
+                    </div>
+
+                    <div className="tier-right">
+                      <div className={`archived-pill ${t.is_archived ? 'active' : ''}`}>{t.is_archived ? 'Archived' : 'Active'}</div>
+
+                      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                        <button className="btn-sm" onClick={() => openEdit(t)}>✏️ Edit</button>
+                        <button className="btn-sm btn-delete" onClick={() => handleDelete(t.id)}>🗑️ Delete</button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )
           )}
 
@@ -185,12 +195,12 @@ export default function TierManager({ subscription, onClose }) {
 
                 <div className="form-group">
                   <label>Base Price</label>
-                  <input type="number" value={form.base_price} onChange={(e) => setForm(prev => ({ ...prev, base_price: e.target.value }))} required />
+                  <input type="number" step="0.01" value={form.base_price} onChange={(e) => setForm(prev => ({ ...prev, base_price: e.target.value }))} required />
                 </div>
 
                 <div className="form-group">
                   <label>Price per Tier</label>
-                  <input type="number" value={form.price_per_tier} onChange={(e) => setForm(prev => ({ ...prev, price_per_tier: e.target.value }))} required />
+                  <input type="number" step="0.01" value={form.price_per_tier} onChange={(e) => setForm(prev => ({ ...prev, price_per_tier: e.target.value }))} required />
                 </div>
               </div>
 
