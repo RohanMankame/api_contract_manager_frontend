@@ -92,13 +92,7 @@ export default function ContractsPage() {
             placeholder="Search contracts..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              padding: '8px 12px',
-              borderRadius: '6px',
-              border: '1px solid #d1d5db',
-              fontSize: '14px',
-              width: '250px'
-            }}
+            className='search-input'
           />
         <button
           onClick={() => setIsAddModalOpen(true)}

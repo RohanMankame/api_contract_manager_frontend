@@ -21,7 +21,7 @@ export default function Login() {
       navigate('/', { replace: true })
     } catch (err) {
       setError('Invalid email or password. Please try again.')
-      console.error(err)
+      console.error('Login failed:', err.message || 'Unknown error')
     } finally {
       setLoading(false)
     }
@@ -67,7 +67,7 @@ export default function Login() {
           </div>
 
           {error && (
-            <div className="error-message">
+            <div className="error-message" role="alert">
               <span className="error-icon">⚠️</span>
               <span>{error}</span>
             </div>

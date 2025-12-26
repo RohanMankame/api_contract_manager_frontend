@@ -34,9 +34,8 @@ export function ViewContractModal({
               // Handle select/dropdown display labels if needed
               if (field.type === 'select' && field.options) {
                 const option = field.options.find(opt => opt.id === value)
-                if (option) value = option.company_name || option.api_name
+                if (option) value = option.company_name || option.api_name || value
               }
-
               return (
                 <div key={field.name} className="view-detail-item">
                   <label style={{ fontWeight: 'bold', display: 'block', fontSize: '12px', color: '#666', textTransform: 'uppercase' }}>

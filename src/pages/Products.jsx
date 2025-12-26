@@ -74,13 +74,7 @@ export default function ProductsPage() {
             placeholder="Search products..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              padding: '8px 12px',
-              borderRadius: '6px',
-              border: '1px solid #d1d5db',
-              fontSize: '14px',
-              width: '250px'
-            }}
+            className='search-input'
           />
         <div style={{ display: 'flex', gap: '10px' }}>
           
