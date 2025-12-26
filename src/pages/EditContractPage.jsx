@@ -1,9 +1,11 @@
+// src/pages/EditContractPage.jsx
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useFetch } from '../hooks'
 import api from '../services/connect'
 import API_PATHS from '../services/apiPaths'
 import '../styles/EntityModalWindow.css'
+import SubscriptionModelView from '../components/ContractComponents/SubscriptionModelView' // <-- import
 
 export default function EditContractPage() {
   const { id } = useParams()
@@ -22,8 +24,8 @@ export default function EditContractPage() {
       setFormData({
         contract_name: contractData.contract_name || '',
         client_id: contractData.client_id || '',
-        start_date: contractData.start_date || '',
-        end_date: contractData.end_date || ''
+        start_date: contractData.start_date ? contractData.start_date.split('T')[0] : '',
+        end_date: contractData.end_date ? contractData.end_date.split('T')[0] : ''
       })
     }
   }, [contractData])
@@ -49,7 +51,7 @@ export default function EditContractPage() {
   if (fetchLoading) return <p>Loading contract...</p>
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '900px', margin: '0 auto' }}>
       <h2>Edit Contract</h2>
       <form onSubmit={handleSubmit} className="modal-form" style={{ background: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
         {error && <div className="error-message">{error}</div>}
@@ -84,6 +86,11 @@ export default function EditContractPage() {
           </button>
         </div>
       </form>
+
+      {/* Subscriptions manager */}
+      <div style={{ marginTop: 24 }}>
+        <SubscriptionModelView contractId={id} />
+      </div>
     </div>
   )
 }

@@ -266,3 +266,37 @@
   font-family: inherit;
   box-sizing: border-box;
 }
+
+
+/* Subscriptions UI */
+.subscription-section {
+  margin-top: 20px;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.subscription-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+.subscription-table th,
+.subscription-table td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+}
+
+.subscription-table th {
+  color: #6b7280;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.subscription-table tbody tr:hover {
+  background-color: #f8fafc;
+}
