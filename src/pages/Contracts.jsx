@@ -3,6 +3,7 @@ import { useFetch } from '../hooks'
 import { DataTable } from "../components/DataTable";
 import { AddEntityModal } from "../components/AddEntityModal";
 import { DeleteEntityModal } from "../components/DeleteEntityModal";
+import { EditEntityModalContract } from '../components/ContractComponents/EditEntityModalContract';
 import API_PATHS from '../services/apiPaths'
 
 export default function ContractsPage() {
