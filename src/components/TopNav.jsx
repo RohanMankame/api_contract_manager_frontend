@@ -1,11 +1,14 @@
+// src/components/TopNav.jsx
 import { useNavigate } from 'react-router-dom'
 import { logout } from '../services/auth'
 import { ThemeToggle } from './ThemeToggle'
+import { useAuth } from '../hooks/useAuth'
 import '../styles/TopNav.css'
 import '../styles/Button.css'
 
 export function TopNav() {
   const navigate = useNavigate()
+  const { user } = useAuth()
 
   const handleLogout = () => {
     logout()
@@ -20,6 +23,10 @@ export function TopNav() {
         </div>
         
         <div className="top-nav-actions">
+          {user?.email && (
+            <div className="user-email">Logged in as: {user.email}</div>
+          )}
+
           <ThemeToggle />
           
           <button

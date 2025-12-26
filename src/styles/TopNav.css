@@ -80,3 +80,11 @@
     font-size: var(--font-size-xs);
   }
 }
+
+
+.user-email {
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+  margin-right: var(--spacing-md);
+  font-weight: 600;
+}
