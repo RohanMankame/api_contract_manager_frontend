@@ -37,7 +37,7 @@ export default function SubscriptionFormModal({ open, mode = 'add', initial = {}
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className="modal-content" style={{ maxWidth: 720 }}>
         <div className="modal-header">
           <h2>{mode === 'add' ? 'Add Subscription' : 'Edit Subscription'}</h2>
           <button className="modal-close" onClick={onClose}>×</button>

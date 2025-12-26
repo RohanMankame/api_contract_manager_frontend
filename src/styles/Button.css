@@ -120,3 +120,34 @@
   cursor: not-allowed;
   transform: none !important;
 }
+
+/* Small & ghost buttons */
+.btn-sm {
+  padding: 6px 10px;
+  height: 32px;
+  font-size: 13px;
+  border-radius: 6px;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--color-text-primary);
+}
+.btn-ghost:hover {
+  background: var(--color-surface-secondary);
+  border-color: var(--color-border);
+}
+
+/* Make delete button compact */
+.btn-delete {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 6px 10px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+}
+.btn-delete:hover {
+  background-color: #fecaca;
+}

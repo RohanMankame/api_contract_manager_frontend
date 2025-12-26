@@ -119,7 +119,7 @@ export default function TierManager({ subscription, onClose }) {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h4 style={{ margin: 0 }}>Subscription Tiers</h4>
             <div>
-              <button className="btn" onClick={openAdd}>Add Tier</button>
+              <button className="btn-add" onClick={openAdd}>Add Tier</button>
               <button className="btn-cancel" onClick={onClose}>Close</button>
             </div>
           </div>

@@ -5,7 +5,7 @@ import { useFetch } from '../hooks'
 import api from '../services/connect'
 import API_PATHS from '../services/apiPaths'
 import '../styles/EntityModalWindow.css'
-import SubscriptionModelView from '../components/ContractComponents/SubscriptionModelView' // <-- import
+import SubscriptionModelView from '../components/ContractComponents/SubscriptionModelView'
 
 export default function EditContractPage() {
   const { id } = useParams()
@@ -51,45 +51,59 @@ export default function EditContractPage() {
   if (fetchLoading) return <p>Loading contract...</p>
 
   return (
-    <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-      <h2>Edit Contract</h2>
-      <form onSubmit={handleSubmit} className="modal-form" style={{ background: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-        {error && <div className="error-message">{error}</div>}
-        
-        <div className="form-group">
-          <label>Contract Name</label>
-          <input name="contract_name" value={formData.contract_name} onChange={handleChange} required />
+    <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+      <h2 style={{ marginBottom: 12 }}>Edit Contract</h2>
+
+      <div className="edit-contract-layout">
+        {/* Left: Contract form */}
+        <div className="contract-form-card">
+          <form onSubmit={handleSubmit} className="modal-form contract-form">
+            {error && <div className="error-message">{error}</div>}
+            
+            <div className="form-group">
+              <label>Contract Name</label>
+              <input name="contract_name" value={formData.contract_name} onChange={handleChange} required />
+            </div>
+
+            <div className="form-group">
+              <label>Client</label>
+              <select name="client_id" value={formData.client_id} onChange={handleChange} required className="dropdown">
+                <option value="">Select Client</option>
+                {clients.map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
+              </select>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label>Start Date</label>
+                <input type="date" name="start_date" value={formData.start_date} onChange={handleChange} required />
+              </div>
+
+              <div className="form-group">
+                <label>End Date</label>
+                <input type="date" name="end_date" value={formData.end_date} onChange={handleChange} required />
+              </div>
+            </div>
+
+            <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, marginTop: 12 }}>
+              <button type="button" className="btn-cancel" onClick={() => navigate('/contracts')}>Cancel</button>
+              <button type="submit" className="btn-save" disabled={loading}>
+                {loading ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
+          </form>
         </div>
 
-        <div className="form-group">
-          <label>Client</label>
-          <select name="client_id" value={formData.client_id} onChange={handleChange} required className="dropdown">
-            <option value="">Select Client</option>
-            {clients.map(c => <option key={c.id} value={c.id}>{c.company_name}</option>)}
-          </select>
-        </div>
+        {/* Right: Subscriptions panel */}
+        <aside className="subscription-panel">
+          <div className="panel-header">
+            <h3 style={{ margin: 0 }}>Subscriptions</h3>
+          </div>
 
-        <div className="form-group">
-          <label>Start Date</label>
-          <input type="date" name="start_date" value={formData.start_date} onChange={handleChange} required />
-        </div>
-
-        <div className="form-group">
-          <label>End Date</label>
-          <input type="date" name="end_date" value={formData.end_date} onChange={handleChange} required />
-        </div>
-
-        <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '20px' }}>
-          <button type="button" className="btn-cancel" onClick={() => navigate('/contracts')}>Cancel</button>
-          <button type="submit" className="btn-save" disabled={loading}>
-            {loading ? 'Saving...' : 'Save Changes'}
-          </button>
-        </div>
-      </form>
-
-      {/* Subscriptions manager */}
-      <div style={{ marginTop: 24 }}>
-        <SubscriptionModelView contractId={id} />
+          <div style={{ marginTop: 12 }}>
+            <SubscriptionModelView contractId={id} />
+          </div>
+        </aside>
       </div>
     </div>
   )

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import api from '../../services/connect'
 import API_PATHS from '../../services/apiPaths'
-import SubscriptionsList from './SubscriptionList'
+import SubscriptionList from './SubscriptionList'
 import SubscriptionFormModal from './SubscriptionFormModal'
 import TierManager from './TierManager'
 
@@ -82,7 +82,7 @@ export default function SubscriptionModelView({ contractId }) {
 
   return (
     <div>
-      <SubscriptionsList
+      <SubscriptionList
         subscriptions={subscriptions}
         products={products}
         loading={loading}
